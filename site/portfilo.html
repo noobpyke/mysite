@@ -1,0 +1,258 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>個人作品集 | Minimalist Portfolio</title>
+    
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;700&display=swap" rel="stylesheet">
+    
+    <!-- React & Lucide Icons -->
+    <script src="https://unpkg.com/react@18/umd/react.production.min.js"></script>
+    <script src="https://unpkg.com/react-dom@18/umd/react-dom.production.min.js"></script>
+    <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+    <script src="https://unpkg.com/lucide@latest"></script>
+
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: black;
+            color: white;
+            margin: 0;
+        }
+        /* 隱藏滾動條但保持功能 */
+        ::-webkit-scrollbar {
+            width: 5px;
+        }
+        ::-webkit-scrollbar-track {
+            background: #000;
+        }
+        ::-webkit-scrollbar-thumb {
+            background: #333;
+            border-radius: 10px;
+        }
+        ::-webkit-scrollbar-thumb:hover {
+            background: #555;
+        }
+        
+        /* 漸層文字補丁 (Tailwind 有時在 CDN 模式下需要明確宣告) */
+        .text-gradient {
+            background-clip: text;
+            -webkit-background-clip: text;
+            color: transparent;
+        }
+    </style>
+</head>
+<body>
+    <div id="root"></div>
+
+    <script type="text/babel">
+        const { useState, useEffect } = React;
+
+        // 簡單的 Lucide 圖標組件封裝
+        const Icon = ({ name, size = 20, className = "" }) => {
+            useEffect(() => {
+                if (window.lucide) {
+                    window.lucide.createIcons();
+                }
+            }, [name]);
+            return <i data-lucide={name} className={className} style={{ width: size, height: size }}></i>;
+        };
+
+        const App = () => {
+            const [scrolled, setScrolled] = useState(false);
+
+            useEffect(() => {
+                const handleScroll = () => setScrolled(window.scrollY > 50);
+                window.addEventListener('scroll', handleScroll);
+                if (window.lucide) window.lucide.createIcons();
+                return () => window.removeEventListener('scroll', handleScroll);
+            }, []);
+
+            const projects = [
+                {
+                    id: 1,
+                    title: "纺织机械装备",
+                    image: "images/1-1.31.jpg",
+                    description: "使用 React 與 Tailwind CSS 構建的高性能電商前端界面。"
+                },
+                {
+                    id: 2,
+                    title: "AI 圖像處理工具",
+                    image: "https://images.unsplash.com/photo-1618005182384-a83a8bd57fbe?auto=format&fit=crop&q=80&w=800",
+                    description: "基於 Python 與 TensorFlow 的自動化背景移除與濾鏡應用。"
+                },
+                {
+                    id: 3,
+                    title: "金融數據儀表板",
+                    image: "https://images.unsplash.com/photo-1551288049-bbda6462f7da?auto=format&fit=crop&q=80&w=800",
+                    description: "複雜數據的可視化解決方案，專注於用戶體驗與動態互動。"
+                },
+                {
+                    id: 4,
+                    title: "區塊鏈錢包介面",
+                    image: "https://images.unsplash.com/photo-1621761191319-c6fb62004040?auto=format&fit=crop&q=80&w=800",
+                    description: "加密貨幣資產管理系統，具備多鏈支持與高度安全性。"
+                }
+            ];
+
+            return (
+                <div className="min-h-screen bg-black text-white selection:bg-white/20">
+                    
+                    {/* 導覽列 */}
+                    <nav className={`fixed top-0 w-full z-50 transition-all duration-300 ${scrolled ? 'bg-black/80 backdrop-blur-md border-b border-white/10 py-3' : 'bg-transparent py-6'}`}>
+                        <div className="max-w-7xl mx-auto px-6 flex justify-between items-center">
+                            <div className="text-2xl font-bold tracking-tighter bg-gradient-to-r from-zinc-400 via-zinc-200 to-zinc-50 text-gradient">
+                                PORTFOLIO
+                            </div>
+                            
+                            <div className="hidden md:flex gap-10 text-xs font-medium tracking-[0.2em]">
+                                {['關於我', '作品集', '技能', '聯絡'].map((item) => (
+                                    <a key={item} href={`#${item}`} className="text-white/50 hover:text-white transition-colors uppercase">
+                                        {item}
+                                    </a>
+                                ))}
+                            </div>
+
+                            <button className="md:hidden">
+                                <div className="w-6 h-px bg-white mb-2"></div>
+                                <div className="w-6 h-px bg-white"></div>
+                            </button>
+                        </div>
+                    </nav>
+
+                    {/* 英雄區 */}
+                    <section className="relative pt-32 pb-20 md:pt-48 md:pb-32 px-6 overflow-hidden">
+                        <div className="absolute top-0 left-1/2 -translate-x-1/2 w-full h-full -z-10 opacity-30">
+                            <div className="absolute top-20 left-1/4 w-[500px] h-[500px] bg-white/5 rounded-full blur-[120px]"></div>
+                            <div className="absolute bottom-0 right-1/4 w-[400px] h-[400px] bg-white/10 rounded-full blur-[100px]"></div>
+                        </div>
+
+                        <div className="max-w-7xl mx-auto">
+                            <div className="max-w-3xl">
+                                <h2 className="text-white/40 font-mono text-sm mb-6 flex items-center gap-3 uppercase tracking-widest">
+                                    <Icon name="terminal" size={14} /> Hello, World.
+                                </h2>
+                                <h1 className="text-6xl md:text-8xl font-bold mb-8 leading-[0.9] tracking-tighter">
+                                    簡單、<br />
+                                    純粹的<span className="text-white/30 tracking-tighter italic">設計</span>
+                                </h1>
+                                <p className="text-lg text-white/50 mb-12 leading-relaxed max-w-xl font-light">
+                                    我是一位追求極致簡約的開發者，專注於利用黑白灰的純粹美學，打造無干擾且高效的數位產品體驗。
+                                </p>
+                                <div className="flex flex-wrap gap-6">
+                                    <button className="px-10 py-4 bg-white text-black hover:bg-white/90 rounded-none font-bold transition-all flex items-center gap-2 group">
+                                        探索 <Icon name="chevron-right" size={18} className="group-hover:translate-x-1 transition-transform" />
+                                    </button>
+                                    <button className="px-10 py-4 border border-white/20 hover:border-white rounded-none font-bold transition-all flex items-center gap-2">
+                                        <Icon name="download" size={18} /> 履歷
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </section>
+
+                    {/* 作品區 */}
+                    <section id="作品集" className="py-32 px-6 border-y border-white/5">
+                        <div className="max-w-7xl mx-auto">
+                            <div className="mb-20">
+                                <h2 className="text-4xl font-bold mb-4 tracking-tight">作品</h2>
+                                <div className="w-12 h-px bg-white"></div>
+                            </div>
+
+                            <div className="grid grid-cols-1 md:grid-cols-2 gap-12">
+                                {projects.map((project) => (
+                                    <div key={project.id} className="group relative transition-all duration-700">
+                                        <div className="aspect-video overflow-hidden bg-white/5 border border-white/10 group-hover:border-white/30 transition-colors">
+                                            <img 
+                                                src={project.image} 
+                                                alt={project.title} 
+                                                className="w-full h-full object-cover grayscale transition-all duration-1000 group-hover:grayscale-0 group-hover:scale-105 opacity-50 group-hover:opacity-100"
+                                            />
+                                        </div>
+                                        <div className="py-8">
+                                            <h3 className="text-2xl font-bold mb-3 tracking-tight">{project.title}</h3>
+                                            <p className="text-white/40 mb-6 font-light leading-relaxed">{project.description}</p>
+                                            <div className="flex gap-8">
+                                                <a href="#" className="flex items-center gap-2 text-xs font-bold uppercase tracking-widest hover:text-white/60 transition-colors">
+                                                    <Icon name="external-link" size={14} /> View Project
+                                                </a>
+                                                <a href="#" className="flex items-center gap-2 text-xs font-bold uppercase tracking-widest text-white/30 hover:text-white transition-colors">
+                                                    <Icon name="github" size={14} /> Source
+                                                </a>
+                                            </div>
+                                        </div>
+                                    </div>
+                                ))}
+                            </div>
+                        </div>
+                    </section>
+
+                    {/* 技能區 */}
+                    <section id="技能" className="py-32 px-6">
+                        <div className="max-w-7xl mx-auto">
+                            <div className="text-left mb-24">
+                                <h2 className="text-4xl font-bold mb-4 tracking-tight">核心能力</h2>
+                                <p className="text-white/30 font-light">技術與美學的平衡點</p>
+                            </div>
+
+                            <div className="grid grid-cols-1 md:grid-cols-3 gap-px bg-white/10 border border-white/10">
+                                {[
+                                    { icon: "code", title: "前端開發", desc: "專注於 React 生態系，編寫簡潔且具擴充性的程式碼。" },
+                                    { icon: "layers", title: "介面設計", desc: "追求極簡主義，排版中留白與間隔的藝術實踐。" },
+                                    { icon: "cpu", title: "系統架構", desc: "設計高效的後端邏輯與數據交互模型。" }
+                                ].map((skill, i) => (
+                                    <div key={i} className="p-16 bg-black hover:bg-white/[0.02] transition-colors">
+                                        <div className="mb-8 text-white/30">
+                                            <Icon name={skill.icon} size={20} />
+                                        </div>
+                                        <h3 className="text-xl font-bold mb-4 tracking-tight">{skill.title}</h3>
+                                        <p className="text-white/40 font-light leading-relaxed text-sm">{skill.desc}</p>
+                                    </div>
+                                ))}
+                            </div>
+                        </div>
+                    </section>
+
+                    {/* 聯絡區 */}
+                    <section id="聯絡" className="py-32 px-6 bg-white/[0.02]">
+                        <div className="max-w-3xl mx-auto">
+                            <div className="text-center mb-20">
+                                <h2 className="text-5xl font-bold mb-6 tracking-tight">聯絡</h2>
+                                <p className="text-white/30 font-light text-lg">如果您有任何合作意向，請隨時透過以下方式聯繫我。</p>
+                            </div>
+                            
+                            <form className="space-y-6" onSubmit={(e) => e.preventDefault()}>
+                                <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                                    <input type="text" placeholder="姓名" className="w-full px-8 py-5 bg-black border border-white/10 focus:border-white outline-none transition-colors text-sm font-light" />
+                                    <input type="email" placeholder="信箱" className="w-full px-8 py-5 bg-black border border-white/10 focus:border-white outline-none transition-colors text-sm font-light" />
+                                </div>
+                                <textarea placeholder="您的訊息" rows="5" className="w-full px-8 py-5 bg-black border border-white/10 focus:border-white outline-none transition-colors text-sm font-light resize-none"></textarea>
+                                <button className="w-full py-6 bg-white text-black font-bold uppercase tracking-widest hover:bg-white/90 transition-all flex items-center justify-center gap-3">
+                                    <Icon name="send" size={16} /> 發送
+                                </button>
+                            </form>
+                        </div>
+                    </section>
+
+                    {/* 頁尾 */}
+                    <footer className="py-16 px-6 border-t border-white/5 text-center text-white/20 text-[10px] tracking-[0.3em] uppercase">
+                        <div className="flex justify-center gap-10 mb-8">
+                            <Icon name="github" size={16} className="hover:text-white cursor-pointer transition-colors" />
+                            <Icon name="mail" size={16} className="hover:text-white cursor-pointer transition-colors" />
+                        </div>
+                        <p>© 2026 DESIGNED WITH MINIMALISM. ALL RIGHTS RESERVED.</p>
+                    </footer>
+                </div>
+            );
+        };
+
+        const root = ReactDOM.createRoot(document.getElementById('root'));
+        root.render(<App />);
+    </script>
+</body>
+</html>
